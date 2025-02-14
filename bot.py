@@ -45,6 +45,14 @@ secrets = [
     "Diwali - she sent me a pic in red suit. She looked so beautiful 😭😭 I wanted to simp hard but didn't.",
     "My ex returned out of nowhere. And I really made Ritika worried, but instead of leaving me, she helped me to get rid of her.",
     "I loved it when she asked me questions about my date preferences during truth and dare as it let me find out we had very similar preferences.",
+    "She held my hand for the first time while we were watching a movie, and I never wanted to let go.",
+    "The first time she called me 'mine,' my heart nearly exploded with happiness.",
+    "I still have the first message she ever sent me saved because it means so much.",
+    "One night, we stayed up talking until sunrise, and I knew I never wanted to stop.",
+    "She once surprised me with a playlist of songs that reminded her of us, and I listen to it all the time.",
+    "Her laugh is my favorite sound in the world, and I could listen to it forever.",
+    "I pretend to be annoyed when she steals my hoodie, but I actually love it.",
+    "Every time I see her, I fall in love all over again." 
 ]
 
 special_message = (
