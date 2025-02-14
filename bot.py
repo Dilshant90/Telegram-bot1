@@ -1,12 +1,12 @@
 import random
 import os
 import asyncio
+import multiprocessing
 from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackContext
 from flask import Flask
-from threading import Thread
 
-# Securely get bot token from environment variables
+# Get bot token from environment variables
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 if not BOT_TOKEN:
     raise ValueError("BOT_TOKEN is missing! Set it in the environment variables.")
@@ -53,7 +53,7 @@ special_message = (
     "Thank you for coming into my life. I LOVE YOU RITIKA ❤️."
 )
 
-# Telegram Bot Command Handlers
+# Command Handlers
 async def love(update: Update, context: CallbackContext):
     await update.message.reply_text(random.choice(love_messages))
 
@@ -82,12 +82,15 @@ flask_app = Flask(__name__)
 def home():
     return "Bot is running!", 200
 
-# Run Flask in a separate thread
+# Function to run Flask web server
 def run_flask():
     flask_app.run(host="0.0.0.0", port=8000)
 
-# Run Telegram bot in an independent event loop
-async def run_bot():
+# Function to run Telegram bot
+def run_bot():
+    asyncio.set_event_loop(asyncio.new_event_loop())  # Create a new event loop
+    loop = asyncio.get_event_loop()
+
     app = Application.builder().token(BOT_TOKEN).build()
     
     app.add_handler(CommandHandler("love", love))
@@ -98,15 +101,15 @@ async def run_bot():
     app.add_handler(CommandHandler("mylove", mylove))
 
     print("Bot is running...")
-    await app.run_polling()
+    loop.run_until_complete(app.run_polling())
 
-# Start both Flask and Telegram bot
-def start():
-    Thread(target=run_flask).start()  # Start Flask on a separate thread
-
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(run_bot())  # Start Telegram bot separately
-
+# Run Flask & Telegram bot separately
 if __name__ == "__main__":
-    start()
+    flask_process = multiprocessing.Process(target=run_flask)
+    flask_process.start()  # Run Flask separately
+
+    bot_process = multiprocessing.Process(target=run_bot)
+    bot_process.start()  # Run Telegram bot separately
+
+    flask_process.join()
+    bot_process.join()
