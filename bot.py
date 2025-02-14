@@ -59,8 +59,6 @@ special_message = (
     "Thank you for coming into my life. I LOVE YOU RITIKA ❤️."
 )
 
-stored_images = {}
-
 # Command Handlers
 async def love(update: Update, context: CallbackContext):
     await update.message.reply_text(random.choice(love_messages))
@@ -98,8 +96,6 @@ async def main():
     await app.run_polling()
 
 if __name__ == "__main__":
-    loop = asyncio.get_event_loop()
-    try:
-        loop.run_until_complete(main())  # ✅ Fix for Koyeb event loop
-    except RuntimeError:
-        asyncio.run(main())  # ✅ Alternative fix
+    loop = asyncio.new_event_loop()  # ✅ Create a clean event loop
+    asyncio.set_event_loop(loop)  
+    loop.run_until_complete(main())  # ✅ Runs without closing the loop
