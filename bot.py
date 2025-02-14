@@ -3,6 +3,7 @@ import os
 import asyncio
 from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackContext
+from flask import Flask
 
 # Securely get bot token from environment variables
 BOT_TOKEN = os.getenv("BOT_TOKEN")
@@ -47,10 +48,6 @@ secrets = [
     "When I asked her if we should keep the pfp after the dare was over, I was afraid she'll say no, as she might have just done it for the dare. But she said we can keep it, it made me happy.",
     "When people shipped me with her, I liked it a lot even when I was not sure if I love her. I loved getting shipped with her.",
     "When she sent the reel with santra date saying I deserve a date like this, I thought for 2 minutes if I should send it or not. But then I said fuck it and sent 'Chalo is date pe'. And when she said yes, I couldn't believe it and was on cloud nine.",
-    "I once told her that Anam asked me some weird questions. And I told her what she asked. But I skipped one essential question. That was, 'What would I tell her if the world was ending?' When Anam asked me that, I was confused what to say. So I thought and said I would tell her I am thankful I met her. And Anam said, 'Bas ye?' So I said no, I'll tell her I loved her. That's when I realized yes, I love her.",
-    "This one's a little embarrassing but when we just started talking in DM, I read somewhere that raat me ye log (Mickey and you) talk in VC. I thought you and Mickey are close lol. And I was jealous and disappointed that I can't talk at night, otherwise I would've joined. But some days later, I saw Mickey and others in VC at night and they were tagging her, but she was talking with me in DM instead. I was shocked, happy, confused, everything all at once. I thought why would she choose me? Mickey had a good sense of humor, could talk with her in VC, and was probably more fun than me.",
-    "When we were in the double date GC, once Nikku was flirting with Anam. Mujhe bhi man kiya ki karu usse flirt. And when I said I'm lonely, she said 'Dw, God will always be with you.' And I said, 'You're my God.' That felt good, the frustration was over.",
-    "Whenever she's making something and I ask 'Mujhe bhi khana,' and she says 'Aajao khila dungi,' I imagine a scenario. There was a song I loved when I was a kid, and in its music video, the girl feeds the boy strawberries as they were making something. I imagine the same thing with us whenever she says 'Aajao khila dungi.'"
 ]
 
 special_message = (
@@ -81,8 +78,8 @@ async def mylove(update: Update, context: CallbackContext):
     else:
         await update.message.reply_text("This message is only for Ritika! ❤️")
 
-# Main Function
-async def main():
+# Function to run Telegram bot
+async def run_bot():
     app = Application.builder().token(BOT_TOKEN).build()
 
     app.add_handler(CommandHandler("love", love))
@@ -95,13 +92,21 @@ async def main():
     print("Bot is running...")
     await app.run_polling()
 
-if __name__ == "__main__":
-    try:
-        import uvloop
-        uvloop.install()  # ✅ Improves performance & avoids event loop issues
-    except ImportError:
-        pass  # If uvloop isn't installed, continue without it
+# Flask app to keep Koyeb's health check happy
+flask_app = Flask(__name__)
 
-    loop = asyncio.get_event_loop()
-    loop.create_task(main())  # ✅ Correct way to run bot on Koyeb
-    loop.run_forever()
+@flask_app.route("/")
+def home():
+    return "Bot is running!", 200  # ✅ This keeps Koyeb's health check from failing
+
+# Start both Flask (web server) and Telegram bot
+if __name__ == "__main__":
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+
+    # Start Flask web server
+    from threading import Thread
+    Thread(target=lambda: flask_app.run(host="0.0.0.0", port=8000)).start()
+
+    # Start Telegram bot
+    loop.run_until_complete(run_bot())
