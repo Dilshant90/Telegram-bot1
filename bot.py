@@ -42,17 +42,17 @@ date_ideas = [
 
 secrets = [
     "I told her about my bullying past and I was very down that day. She helped me through it.",
-    "Diwali - she sent me a pic in red suit. She looked so beautiful 😭😭 I wanted to simp hard but didn't.",
-    "My ex returned out of nowhere. And I really made Ritika worried, but instead of leaving me, she helped me to get rid of her.",
+    "Diwali - she sent me a pic in red suit, she looked so beautiful 😭😭 I wanted to simp hard but didn't.",
+    "My ex returned out of nowhere, and I really made Ritika worried, but instead of leaving me, she helped me to get rid of her.",
     "I loved it when she asked me questions about my date preferences during truth and dare as it let me find out we had very similar preferences.",
-    "She held my hand for the first time while we were watching a movie, and I never wanted to let go.",
-    "The first time she called me 'mine,' my heart nearly exploded with happiness.",
-    "I still have the first message she ever sent me saved because it means so much.",
-    "One night, we stayed up talking until sunrise, and I knew I never wanted to stop.",
-    "She once surprised me with a playlist of songs that reminded her of us, and I listen to it all the time.",
-    "Her laugh is my favorite sound in the world, and I could listen to it forever.",
-    "I pretend to be annoyed when she steals my hoodie, but I actually love it.",
-    "Every time I see her, I fall in love all over again." 
+    "When Nikku gave her a dare to put matching pfp with me, I was honestly very happy because I was afraid to ask her to put matching pfp.",
+    "When I asked her if we should keep the pfp after the dare was over, I was afraid she'd say no, as she might have just done it for the dare. But she said we can keep it, and it made me happy.",
+    "When people shipped me with her, I liked it a lot even when I was not sure if I loved her. I loved getting shipped with her.",
+    "When she sent the reel with the santra date saying I deserve a date like this, I thought for 2 minutes if I should send it or not. But then I said, 'F*** it' and sent 'Chalo is date pe,' and when she said yes, I couldn't believe it and was on cloud nine.",
+    "I once told her that Anam asked me some weird questions, and I told her what she asked, but I skipped one essential question: 'What would I tell her if the world was ending?' When Anam asked me that, I was confused about what to say. So I thought and said, 'I would tell her I am thankful I met her.' And Anam said, 'Bas ye?' To which I said, 'No, I'll say I loved her.' That's when I realized—yes, I love her.",
+    "This one's a little embarrassing, but when we just started talking in DM, I read somewhere that Raat me ye log (Mickey and you) talk in VC. I thought you and Mickey were close lol. And I was jealous and disappointed that I couldn't talk at night. Otherwise, I would've joined. But some days later, I saw Mickey and others in VC at night, and they were tagging her, but she was talking with me in DM instead. I was shocked, happy, confused—everything all at once. I thought, 'Why would she choose me? Mickey has a good sense of humor, can talk with her in VC, and is probably more fun than me.'",
+    "When we were in the double date GC, once Nikku was flirting with Anam. Mujhe bhi man kiya ki karu usse flirt. And when I said I'm lonely, she said, 'Dw, God will always be with you.' And I said, 'You're my God.' That felt good, the frustration was over.",
+    "Whenever she's making something and I ask 'Mujhe bhi khana?' and she says 'Aajao khila dungi,' I imagine a scenario. There was a song I loved when I was a kid, and in its music video, the girl feeds the boy strawberries as they were making something. I imagine the same thing with us whenever she says that 'Aajao khila dungi.'"
 ]
 
 special_message = (
