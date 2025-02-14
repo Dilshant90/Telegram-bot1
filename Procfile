@@ -1,1 +1,1 @@
-web: python bot.py
+web: gunicorn main:flask_app --bind 0.0.0.0:8000
