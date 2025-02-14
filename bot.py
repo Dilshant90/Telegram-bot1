@@ -96,6 +96,12 @@ async def main():
     await app.run_polling()
 
 if __name__ == "__main__":
-    loop = asyncio.new_event_loop()  # ✅ Create a clean event loop
-    asyncio.set_event_loop(loop)  
-    loop.run_until_complete(main())  # ✅ Runs without closing the loop
+    try:
+        import uvloop
+        uvloop.install()  # ✅ Improves performance & avoids event loop issues
+    except ImportError:
+        pass  # If uvloop isn't installed, continue without it
+
+    loop = asyncio.get_event_loop()
+    loop.create_task(main())  # ✅ Correct way to run bot on Koyeb
+    loop.run_forever()
