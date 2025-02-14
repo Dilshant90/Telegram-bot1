@@ -4,6 +4,7 @@ import asyncio
 from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackContext
 from flask import Flask
+from threading import Thread
 
 # Securely get bot token from environment variables
 BOT_TOKEN = os.getenv("BOT_TOKEN")
@@ -44,10 +45,6 @@ secrets = [
     "Diwali - she sent me a pic in red suit. She looked so beautiful 😭😭 I wanted to simp hard but didn't.",
     "My ex returned out of nowhere. And I really made Ritika worried, but instead of leaving me, she helped me to get rid of her.",
     "I loved it when she asked me questions about my date preferences during truth and dare as it let me find out we had very similar preferences.",
-    "When Nikku gave her a dare to put matching pfp with me, I was honestly very happy because I was afraid to ask her to put matching pfp.",
-    "When I asked her if we should keep the pfp after the dare was over, I was afraid she'll say no, as she might have just done it for the dare. But she said we can keep it, it made me happy.",
-    "When people shipped me with her, I liked it a lot even when I was not sure if I love her. I loved getting shipped with her.",
-    "When she sent the reel with santra date saying I deserve a date like this, I thought for 2 minutes if I should send it or not. But then I said fuck it and sent 'Chalo is date pe'. And when she said yes, I couldn't believe it and was on cloud nine.",
 ]
 
 special_message = (
@@ -56,7 +53,7 @@ special_message = (
     "Thank you for coming into my life. I LOVE YOU RITIKA ❤️."
 )
 
-# Command Handlers
+# Telegram Bot Command Handlers
 async def love(update: Update, context: CallbackContext):
     await update.message.reply_text(random.choice(love_messages))
 
@@ -78,10 +75,21 @@ async def mylove(update: Update, context: CallbackContext):
     else:
         await update.message.reply_text("This message is only for Ritika! ❤️")
 
-# Function to run Telegram bot
+# Flask app for Koyeb health check
+flask_app = Flask(__name__)
+
+@flask_app.route("/")
+def home():
+    return "Bot is running!", 200
+
+# Run Flask in a separate thread
+def run_flask():
+    flask_app.run(host="0.0.0.0", port=8000)
+
+# Run Telegram bot in an independent event loop
 async def run_bot():
     app = Application.builder().token(BOT_TOKEN).build()
-
+    
     app.add_handler(CommandHandler("love", love))
     app.add_handler(CommandHandler("hug", hug))
     app.add_handler(CommandHandler("kiss", kiss))
@@ -92,21 +100,13 @@ async def run_bot():
     print("Bot is running...")
     await app.run_polling()
 
-# Flask app to keep Koyeb's health check happy
-flask_app = Flask(__name__)
+# Start both Flask and Telegram bot
+def start():
+    Thread(target=run_flask).start()  # Start Flask on a separate thread
 
-@flask_app.route("/")
-def home():
-    return "Bot is running!", 200  # ✅ This keeps Koyeb's health check from failing
-
-# Start both Flask (web server) and Telegram bot
-if __name__ == "__main__":
     loop = asyncio.new_event_loop()
     asyncio.set_event_loop(loop)
+    loop.run_until_complete(run_bot())  # Start Telegram bot separately
 
-    # Start Flask web server
-    from threading import Thread
-    Thread(target=lambda: flask_app.run(host="0.0.0.0", port=8000)).start()
-
-    # Start Telegram bot
-    loop.run_until_complete(run_bot())
+if __name__ == "__main__":
+    start()
