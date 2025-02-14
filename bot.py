@@ -1,5 +1,6 @@
 import random
 import os
+import asyncio
 from telegram import Update
 from telegram.ext import Application, CommandHandler, CallbackContext
 
@@ -73,9 +74,6 @@ async def kiss(update: Update, context: CallbackContext):
 async def date(update: Update, context: CallbackContext):
     await update.message.reply_text(random.choice(date_ideas))
 
-async def sticker(update: Update, context: CallbackContext):
-    await update.message.reply_sticker("CAACAgUAAxkBAAEKGlxlE8mQzJvXjwxXJd8RUqHugOwRYAACQAkAAvoLtFSVjeGxNkZMjLQE")  # Example sticker ID
-
 async def secret(update: Update, context: CallbackContext):
     await update.message.reply_text(random.choice(secrets))
 
@@ -85,32 +83,6 @@ async def mylove(update: Update, context: CallbackContext):
     else:
         await update.message.reply_text("This message is only for Ritika! ❤️")
 
-async def store(update: Update, context: CallbackContext):
-    if update.message.reply_to_message and update.message.reply_to_message.photo:
-        file_id = update.message.reply_to_message.photo[-1].file_id
-        stored_images[len(stored_images) + 1] = file_id
-        await update.message.reply_text(f"Image saved as {len(stored_images)}")
-    else:
-        await update.message.reply_text("Please reply to an image to store it.")
-
-async def list_images(update: Update, context: CallbackContext):
-    if not stored_images:
-        await update.message.reply_text("No images stored yet.")
-    else:
-        img_list = "\n".join([f"{num}: Image" for num in stored_images.keys()])
-        await update.message.reply_text(f"Stored images:\n{img_list}")
-
-async def sendimg(update: Update, context: CallbackContext):
-    if len(context.args) != 1 or not context.args[0].isdigit():
-        await update.message.reply_text("Usage: /sendimg <image number>")
-        return
-
-    img_number = int(context.args[0])
-    if img_number in stored_images:
-        await update.message.reply_photo(stored_images[img_number])
-    else:
-        await update.message.reply_text("Invalid image number.")
-
 # Main Function
 async def main():
     app = Application.builder().token(BOT_TOKEN).build()
@@ -119,16 +91,15 @@ async def main():
     app.add_handler(CommandHandler("hug", hug))
     app.add_handler(CommandHandler("kiss", kiss))
     app.add_handler(CommandHandler("date", date))
-    app.add_handler(CommandHandler("sticker", sticker))
     app.add_handler(CommandHandler("secret", secret))
     app.add_handler(CommandHandler("mylove", mylove))
-    app.add_handler(CommandHandler("store", store))
-    app.add_handler(CommandHandler("list", list_images))
-    app.add_handler(CommandHandler("sendimg", sendimg))
 
     print("Bot is running...")
     await app.run_polling()
 
 if __name__ == "__main__":
-    import asyncio
-    asyncio.run(main())
+    loop = asyncio.get_event_loop()
+    try:
+        loop.run_until_complete(main())  # ✅ Fix for Koyeb event loop
+    except RuntimeError:
+        asyncio.run(main())  # ✅ Alternative fix
